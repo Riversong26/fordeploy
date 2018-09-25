@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>User Dashboard</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+</head>
+<body>
+<div class="container">
+	<a href="/logout">Logout</a></h4>
+	<hr>
+	<h1>Welcome, {{ request.session.name }}!</h1>
+	{% for user in users %}
+		{% if user.id is request.session.id %}
+			{% if user.pokie.count is 0 %}
+				<h3>No one has poked you yet!</h3>
+			{% else %}
+				<h3> You have been poked: {{user.pokie.count}} time(s) </h3>
+				
+			{% endif %}
+		{% endif %}
+	{%endfor%}
+	<br>
+	{% for user in users %}
+			{% if user.id is not request.session.id %}
+			<tr>
+				<td>{{user.name}}</td>
+				poked you
+				<td>{{user.poker.count}}</td>
+				times.
+			</tr>
+			{%endif%}
+		{%endfor%}
+	<hr>
+	<table>
+		<thead>
+			<tr>
+				<h4>List of people who have poked you</h4>
+				<th>Name</th>
+				<th>Alias</th>
+				<th>Email Address</th>
+				<th>Poke History</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for user in users %}
+			{% if user.id is not request.session.id %}
+			<tr>
+				<td>{{user.name}}</td>
+				<td>{{user.alias}}</td>
+				<td>{{user.email}}</td>
+				<td>{{user.pokie.count}}</td>
+                <td><a href="/pokes/{{ user.id }}/more"><button>Poke</button></a></td>
+			</tr>
+			{%endif%}
+		{%endfor%}
+		</tbody>
+	</table>
+</div>
+</body>
+</html>
+
